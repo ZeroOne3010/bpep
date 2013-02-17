@@ -20,12 +20,14 @@ import org.eclipse.ui.IWorkbenchWindowActionDelegate;
 
 public class GenerateBuilderAction extends Action implements IEditorActionDelegate, IWorkbenchWindowActionDelegate {
 
+	private IWorkbenchWindow window;
 	private IEditorPart editor;
 
 	/**
 	 * @see IActionDelegate#run(IAction)
 	 */
 	public void run(IAction action) {
+		editor = getActiveEditor();
 		IWorkingCopyManager manager = JavaUI.getWorkingCopyManager();
 		IEditorInput editorInput = editor.getEditorInput();
 		try {
@@ -65,7 +67,11 @@ public class GenerateBuilderAction extends Action implements IEditorActionDelega
     }
 
     public void init(IWorkbenchWindow window) {
-        editor = window.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+    	this.window = window;
     }
+
+	private IEditorPart getActiveEditor() {
+		return window.getWorkbench().getActiveWorkbenchWindow().getActivePage().getActiveEditor();
+	}
 
 }
